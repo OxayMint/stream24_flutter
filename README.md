@@ -32,7 +32,7 @@ dependencies:
 
 ## Example
 
-Example of usage with
+Example of usage with webview_flutter
 
 ```dart
 import 'package:flutter/material.dart';
