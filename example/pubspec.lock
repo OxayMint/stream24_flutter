@@ -163,9 +163,11 @@ packages:
   stream24_flutter:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: f24c454e9f4b75cbdbae2cb238ec0a9ae2e78e64
+      url: "https://github.com/OxayMint/stream24_flutter.git"
+    source: git
     version: "0.0.1"
   stream_channel:
     dependency: transitive
