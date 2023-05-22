@@ -35,6 +35,7 @@ dependencies:
 Example of usage with
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:stream24_flutter/stream24_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
