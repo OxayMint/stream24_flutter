@@ -1,39 +1,87 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+# 24Stream Flutter
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+A flutter plugin for generating 24Stream HTML widgets to be used in webview_flutter or any other nested browser.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
 
-## Features
+## Installation
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+To install add stream24_flutter plugin to your dependencies in your `pubspec.yaml`
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
+```yaml
+dependencies:
+  ...
+  stream24_flutter:
+    git:
+      url: https://github.com/OxayMint/stream24_flutter.git
+      ref: main
+...
+```
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+#### GetLink
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `brand` | `string` | **Required**. Brand name for the page |
+| `productId` | `string` | **Required**. Prouct ID for the page |
+| `retailerDomain` | `string` | **Required**. Domain of the retailer of the page |
+| `templateType` | `string` | **Required**. Template type of the page |
+| `resultType` | `Stream24ResultType` | Result type of the page. One of `.json`, `.html` or `.iframe`. Defaults to `.html`|
+| `contentType` | `Stream24ContentType` | Content type of the page. One of `.shopInShops` or `.minisite`. Defaults to `.minisite`|
+
+## Example
+
+Example of usage with
 
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:stream24_flutter/stream24_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class WebViewPage extends StatefulWidget {
+  WebViewPage({
+    super.key,
+    required this.brand,
+    required this.productId,
+    required this.retailerDomain,
+    required this.templateType,
+    this.resultType = Stream24ResultType.html,
+    this.contentType = Stream24ContentType.minisite,
+  });
+  String brand;
+  String productId;
+  String retailerDomain;
+  String templateType;
+  Stream24ResultType resultType;
+  Stream24ContentType contentType;
+
+  @override
+  State<WebViewPage> createState() => _WebViewPageState();
+}
+
+class _WebViewPageState extends State<WebViewPage> {
+  late WebViewController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadHtmlString(Stream24.getHtml(
+          brand: 'Samsung',
+          productId: '16651081549',
+          retailerDomain: 'irshad.az',
+          templateType: 'master_template',
+          resultType: Stream24ResultType.html,
+          contentType: Stream24ContentType.shopInShops));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WebViewWidget(
+      controller: controller,
+    );
+  }
+}
+
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
