@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="example">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>example</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+
+</head>
+
+<body>
+
+  <script>
+    (function (w, d, s, o) {
+      var f = d.getElementsByTagName(s)[0];
+      var j = d.createElement(s);
+      w.TTLStreamReady = new Promise((resolve) => {
+        j.async = true;
+        j.src = 'https://content.24ttl.stream/widget.js';
+        f.parentNode.insertBefore(j, f);
+        j.onload = function () {
+          w.ttlStream = new TTLStream(o);
+          resolve(w.ttlStream);
+        };
+      });
+    })(window, document, 'script', {});
+
+  </script>
+  <script>
+    function clickOrigin(e) {
+      var target = e.target;
+      var tag = [];
+      tag.tagType = target.tagName.toLowerCase();
+      tag.tagClass = target.className.split(' ');
+      tag.id = target.id;
+      tag.parent = target.parentNode.tagName.toLowerCase();
+
+      return tag;
+    }
+    function openWidget(brand, productId, retailerDomain, templateType, resultType, contentType) {
+
+
+      const parameters = { "brand": brand, "productId": productId, "retailerDomain": retailerDomain, "templateType": templateType, "resultType": resultType, "contentType": contentType, "el": "#stream24holder" }
+
+      TTLStreamReady.then(() => { ttlStream.findAndInsert(parameters); });
+
+      document.body.onclick = function (e) {
+        const origin = e.target.closest(`a`);
+        console.log(origin);
+        //e.stopPropagation();
+        //e.preventDefault();
+        if (origin.getAttribute('internal') == 'true' && origin.getAttribute('target') == '_blank') {
+
+        }
+        return false;
+        //if(elem.tagType == 'a' && elem.at)
+        /* for (i = 0; i < tagsToIdentify.length; i++) {
+           if (elem.tagType == tagsToIdentify[i] && elem.parent == 'a') {
+             console.log('You\'ve clicked a monitored tag (' + elem.tagType + ', in this case and one inside an "a" element, no less!).');
+             return false; // or do something else.
+           }
+           else if (elem.tagType == tagsToIdentify[i]) {
+             console.log('You\'ve clicked a monitored tag (' + elem.tagType + ', in this case).');
+             return false; // or do something else.
+           }
+         }*/
+      };
+    }
+
+    function hideFlt() {
+      document.getElementsByTagName('flt-glass-pane')[0].style.display = 'none';
+      document.body.style.overflow = null;
+      document.body.style.position = null;
+    }
+
+    function showFlt() {
+
+      document.getElementsByTagName('flt-glass-pane')[0].style.display = 'block';
+      document.body.style.position = 'fixed';
+      document.body.style.overflow = 'hidden';
+    }
+  </script>
+  <script>
+    window.addEventListener('load', function (ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+
+  <div id="stream24holder" style="z-index: 9;">
+
+  </div>
+
+</body>
+
+</html>
