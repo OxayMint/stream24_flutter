@@ -19,7 +19,7 @@ dependencies:
 ```
 ## Usage
 
-#### GetLink
+#### getHtml
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
@@ -29,6 +29,8 @@ dependencies:
 | `templateType` | `string` | **Required**. Template type of the page |
 | `resultType` | `Stream24ResultType` | Result type of the page. One of `.json`, `.html` or `.iframe`. Defaults to `.html`|
 | `contentType` | `Stream24ContentType` | Content type of the page. One of `.shopInShops` or `.minisite`. Defaults to `.minisite`|
+
+Returns HTML code of the page.
 
 ## Example
 
