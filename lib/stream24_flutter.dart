@@ -17,14 +17,13 @@ class Stream24 {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>24 Stream</title>
-    <script async="" src="https://content.24ttl.stream/widget.js"></script>
 </head>
 
 <body>
     <div class="wrapper"></div>
     <script>(function (w, d, s, o) { var f = d.getElementsByTagName(s)[0]; var j = d.createElement(s); w.TTLStreamReady = new Promise((resolve) => { j.async = true; j.src = 'https://content.24ttl.stream/widget.js'; f.parentNode.insertBefore(j, f); j.onload = function () { w.ttlStream = new TTLStream(o); resolve(w.ttlStream); }; }); })(window, document, 'script', {}); </script>
     <script>
-        const parameters = { "brand": "{{brand}}", "productId": "{{productId}}", "retailerDomain": "{{retailerDomain}}", "templateType": "{{templateType}}", "resultType": "{{resultType}}", "contentType": "{{contentType}}", "el": ".wrapper" }
+        const parameters = { "brand": "{{brand}}", "productId": "{{productId}}", "retailerDomain": "{{retailerDomain}}", "templateType": "{{templateType}}", "resultType": "{{resultType}}", "contentType": "{{contentType}}", "el": ".wrapper", "windowMode": "self" }
         TTLStreamReady.then(() => { ttlStream.findAndInsert(parameters); }); </script>
 </body>
 

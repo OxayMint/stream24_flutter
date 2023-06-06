@@ -28,21 +28,26 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void initState() {
     super.initState();
+    final html = Stream24.getHtml(
+        brand: widget.brand,
+        productId: widget.productId,
+        retailerDomain: widget.retailerDomain,
+        templateType: widget.templateType,
+        resultType: widget.resultType,
+        contentType: widget.contentType);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadHtmlString(Stream24.getHtml(
-          brand: widget.brand,
-          productId: widget.productId,
-          retailerDomain: widget.retailerDomain,
-          templateType: widget.templateType,
-          resultType: widget.resultType,
-          contentType: widget.contentType));
+      ..loadHtmlString(html);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(
-      controller: controller,
+    return Scaffold(
+      body: SafeArea(
+        child: WebViewWidget(
+          controller: controller,
+        ),
+      ),
     );
   }
 }
