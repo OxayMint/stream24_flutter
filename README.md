@@ -27,6 +27,8 @@ dependencies:
 | `productId` | `string` | **Required**. Prouct ID for the page |
 | `retailerDomain` | `string` | **Required**. Domain of the retailer of the page |
 | `templateType` | `string` | **Required**. Template type of the page |
+| `language` | `string` | Language code for the page encoded as country_language. Country code should set according to ISO 3166-1 standard and the language code - to ISO 639-1. Defaults to `ru_ru` |
+| `throwError` | `bool` | Whether to throw an error if the content not found. Defaults to `true` |
 | `resultType` | `Stream24ResultType` | Result type of the page. One of `.json`, `.html` or `.iframe`. Defaults to `.html`|
 | `contentType` | `Stream24ContentType` | Content type of the page. One of `.shopInShops` or `.minisite`. Defaults to `.minisite`|
 
@@ -49,11 +51,32 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   late WebViewController controller;
+    double height = 120;
+
   @override
   void initState() {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+       controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      // to automatically adjust height add the following block
+      ..addJavaScriptChannel("FlutterWebview",
+          onMessageReceived: (JavaScriptMessage msg) {
+        double? y = double.tryParse(msg.message);
+        setState(() {
+          height = y ?? 0;
+        });
+      })
+      //////////////////////////////////////////////////////////////////
+
+      //if you want to throw errors on 404 content add the following block
+      ..addJavaScriptChannel("MobileError",
+          onMessageReceived: (JavaScriptMessage msg) {
+        throw Exception(msg.message);
+      })
+      //////////////////////////////////////////////////////////////////
+
       ..loadHtmlString(Stream24.getHtml(
           brand: 'Samsung',
           productId: '16651081549',
@@ -65,8 +88,11 @@ class _WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(
-      controller: controller,
+    return SizedBox(
+        height: height,
+        child: WebViewWidget(
+          controller: controller,
+        ),
     );
   }
 }
