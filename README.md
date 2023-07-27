@@ -56,10 +56,9 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
        controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+
       // to automatically adjust height add the following block
       ..addJavaScriptChannel("FlutterWebview",
           onMessageReceived: (JavaScriptMessage msg) {
@@ -73,6 +72,7 @@ class _WebViewPageState extends State<WebViewPage> {
       //if you want to throw errors on 404 content add the following block
       ..addJavaScriptChannel("MobileError",
           onMessageReceived: (JavaScriptMessage msg) {
+            
         throw Exception(msg.message);
       })
       //////////////////////////////////////////////////////////////////
