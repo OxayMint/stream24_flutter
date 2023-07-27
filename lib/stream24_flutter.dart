@@ -26,14 +26,16 @@ class Stream24 {
     <div id="wrapper"></div>
     <script>(function (w, d, s, o) { var f = d.getElementsByTagName(s)[0]; var j = d.createElement(s); w.TTLStreamReady = new Promise((resolve) => { j.async = true; j.src = 'https://content.24ttl.stream/widget.js'; f.parentNode.insertBefore(j, f); j.onload = function () { w.ttlStream = new TTLStream(o); resolve(w.ttlStream); }; }); })(window, document, 'script', {}); </script>
     <script>
-        const parameters = { "brand": "{{brand}}", "productId": "{{productId}}", "retailerDomain": "{{retailerDomain}}", "language": "{{language}}", "throwError": {{throwError}}, "templateType": "{{templateType}}", "resultType": "{{resultType}}", "contentType": "{{contentType}}", "el": "#wrapper", "windowMode": "self" }
-        TTLStreamReady.then(() => { ttlStream.findAndInsert(parameters); }); 
+        const params = { "brand": "{{brand}}", "productId": "{{productId}}", "retailerDomain": "{{retailerDomain}}", "language": "{{language}}", "throwError": {{throwError}}, "templateType": "{{templateType}}", "resultType": "{{resultType}}", "contentType": "{{contentType}}", "el": "#wrapper", "windowMode": "self" }
+        TTLStreamReady.then(() => {
+            ttlStream.findAndInsert(params).catch((e) => {
+                alert(e);
+                MobileError.postMessage(e.message);
+            });
+        });
+
         setTimeout((e) => { FlutterWebview.postMessage(document.documentElement.scrollHeight) }, 3000);
-        (function(){ 
-        var originalerror = console.error;
-        console.error = function(txt) {
-              MobileError.postMessage(txt);
-        }})();
+
 
     </script>
 </body>

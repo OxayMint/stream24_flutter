@@ -12,8 +12,12 @@
     <div id="wrapper"></div>
     <script>(function (w, d, s, o) { var f = d.getElementsByTagName(s)[0]; var j = d.createElement(s); w.TTLStreamReady = new Promise((resolve) => { j.async = true; j.src = 'https://content.24ttl.stream/widget.js'; f.parentNode.insertBefore(j, f); j.onload = function () { w.ttlStream = new TTLStream(o); resolve(w.ttlStream); }; }); })(window, document, 'script', {}); </script>
     <script>
-
-        TTLStreamReady.then(() => { ttlStream.findAndInsert({ "brand": "Samsung", "productId": "16651081549", "retailerDomain": "irshad.az", "templateType": "master_template", "resultType": "html", "contentType": "sis", "el": "#wrapper", "language": "ru", "windowMode": "self", "throwError": true }); });
+        var params = { "brand": "Samsung", "productId": "166510815494", "retailerDomain": "irshad.az", "templateType": "master_template", "resultType": "html", "contentType": "sis", "el": "#wrapper", "language": "ru", "windowMode": "self", "throwError": true };
+        TTLStreamReady.then(() => {
+            ttlStream.findAndInsert(params).catch((e) => {
+                alert(e)
+            });
+        });
         //setTimeout((e) => { MobileWebview.postMessage(document.documentElement.scrollHeight) }, 3000);
 
     </script>
