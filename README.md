@@ -1,46 +1,87 @@
 
 # 24Stream Flutter
 
-A flutter plugin for generating 24Stream HTML widgets to be used in webview_flutter or any other nested browser.
+Flutter плагин для создания виджетов 24Stream Rich Page.
 
+## Установка
 
-## Installation
-
-To install add stream24_flutter plugin to your dependencies in your `pubspec.yaml`
+Для установки добавьте stream24_flutter в зависимости внутри `pubspec.yaml` вашего проекта.
 
 ```yaml
 dependencies:
   ...
-  stream24_flutter:
-    git:
-      url: https://github.com/OxayMint/stream24_flutter.git
-      ref: main
+  stream24: ^0.1.1
 ...
 ```
-## Usage
 
-#### getHtml
+## Использование
+
+#### Stream24RichPage
+
+Webview виджет с рич контентом и автоматической настройкой высоты.
+
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `brand` | `string` | **Required**. Brand name for the page |
-| `productId` | `string` | **Required**. Prouct ID for the page |
-| `retailerDomain` | `string` | **Required**. Domain of the retailer of the page |
-| `templateType` | `string` | **Required**. Template type of the page |
-| `language` | `string` | Language code for the page encoded as country_language. Country code should set according to ISO 3166-1 standard and the language code - to ISO 639-1. Defaults to `ru_ru` |
-| `throwError` | `bool` | Whether to throw an error if the content not found. Defaults to `true` |
-| `resultType` | `Stream24ResultType` | Result type of the page. One of `.json`, `.html` or `.iframe`. Defaults to `.html`|
-| `contentType` | `Stream24ContentType` | Content type of the page. One of `.shopInShops` or `.minisite`. Defaults to `.minisite`|
+| `brand` | `string` | **Обязательно**. Название бренда страницы |
+| `productId` | `string` | **Обязательно**. Идентификатор продукта страницы |
+| `retailerDomain` | `string` | **Обязательно**. Домен ретейлера страницы |
+| `templateType` | `string` | **Обязательно**. Тип шаблона страницы |
+| `language` | `string` | Языковой код страницы в виде страна_язык. Код страны должен быть указан в стандарте ISO 3166-1, а код языка - в стандарте ISO 639-1. По умолчанию `ru_ru` |
+| `onError` | `Function(String)` | Функция, вызываемая при возникновении ошибки. |
+| `contentType` | `Stream24ContentType` | Тип содержимого страницы. `.shopInShops` Или `.minisite`. По умолчанию `.minisite`|
 
-Returns HTML code of the page.
 
-## Example
 
-Example of usage with webview_flutter
+#### getHtml
 
+Возвращает HTML код страницы в виде строки.
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `brand` | `string` | **Обязательно**. Название бренда страницы |
+| `productId` | `string` | **Обязательно**. Идентификатор продукта страницы |
+| `retailerDomain` | `string` | **Обязательно**. Домен ретейлера страницы |
+| `templateType` | `string` | **Обязательно**. Тип шаблона страницы |
+| `language` | `string` | Языковой код страницы в виде страна_язык. Код страны должен быть указан в стандарте ISO 3166-1, а код языка - в стандарте ISO 639-1. По умолчанию `ru_ru` |
+| `contentType` | `Stream24ContentType` | Тип содержимого страницы. `.shopInShops` Или `.minisite`. По умолчанию `.minisite`|
+
+
+## Примеры использования
+
+`Используя Stream24RichPage`
 ```dart
 import 'package:flutter/material.dart';
-import 'package:stream24_flutter/stream24_flutter.dart';
+import 'package:stream24/stream24.dart';
+import 'package:stream24/rich_page.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class WebViewPage extends StatefulWidget {
+  WebViewPage({super.key});
+  @override
+  State<WebViewPage> createState() => _WebViewPageState();
+}
+class _WebViewPageState extends State<WebViewPage> {
+  @override
+  Widget build(BuildContext context) {
+    return  Stream24RichPage(
+            brand: 'Samsung',
+            productId: '16651081549',
+            retailerDomain: 'irshad.az',
+            templateType: 'master_template',
+            contentType: Stream24ContentType.shopInShops,
+            onError: (errorMsg){ print(errorMsg); }
+        );
+    }
+}
+
+```
+ИЛИ 
+
+`Используя getHtml`
+```dart
+import 'package:flutter/material.dart';
+import 'package:stream24/stream24.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -60,17 +101,16 @@ class _WebViewPageState extends State<WebViewPage> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
 
       // to automatically adjust height add the following block
-      ..addJavaScriptChannel("FlutterWebview",
+      ..addJavaScriptChannel("FlutterWebviewHeight",
           onMessageReceived: (JavaScriptMessage msg) {
-        double? y = double.tryParse(msg.message);
         setState(() {
-          height = y ?? 0;
+          height = double.tryParse(msg.message) ?? 0;
         });
       })
       //////////////////////////////////////////////////////////////////
 
       //if you want to throw errors on 404 content add the following block
-      ..addJavaScriptChannel("MobileError",
+      ..addJavaScriptChannel("FlutterError",
           onMessageReceived: (JavaScriptMessage msg) {
             
         throw Exception(msg.message);
@@ -82,7 +122,6 @@ class _WebViewPageState extends State<WebViewPage> {
           productId: '16651081549',
           retailerDomain: 'irshad.az',
           templateType: 'master_template',
-          resultType: Stream24ResultType.html,
           contentType: Stream24ContentType.shopInShops));
   }
 
